@@ -306,8 +306,10 @@ jQuery(function($) {
 				surround('\n', customs, '///---\n')+
 				surround('\n', bindings, '\n///---\n'),
 				'//shameless promotion',
-				'echo "-----             Thanks for using CFG.TF             -----"',
-				'echo "----- Create your own custom config at https://cfg.tf -----"'
+				'echo "-----------------------------------------------------------"',
+				'echo "------------------Thanks for using CFG.TF------------------"',
+				'echo "------Create your own custom config at https://cfg.tf------"',
+				'echo "-----------------------------------------------------------"'
 			].join('\n');
 			zip.file('cfg/custom.cfg', custom);
 
