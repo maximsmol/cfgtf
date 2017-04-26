@@ -67,6 +67,11 @@ jQuery(function($) {
 		});
 	};
 
+	var surround = function(a, x, b) {
+		if (x !== '') return (a == null ? '' : a)+x+(b == null ? '' : b);
+		return x;
+	};
+
 	if (!JSZip.support.blob) {
 		showError('This only works with a good browser!');
 		return;
@@ -158,18 +163,22 @@ jQuery(function($) {
 
 		if ($('#tftrue').is(':checked')) {
 			tftrueset = [
-				'//TFTrue settings ',
+				'//tftrue settings',
+				'//Made with cfg.tf - custom Team Fortress 2 config generator',
 				'',
-				'tftrue_maxfov ' + tftrue_maxfov,
-				'tftrue_freezecam ' + tftrue_freezecam,
-				'tftrue_whitelist_id ' + tftrue_whitelist_id,
-				'tftrue_logs_apikey ' + tftrue_logs_apikey,
-				'tftrue_restorestats ' + tftrue_restorestats,
-				'tftrue_tv_autorecord ' + tftrue_tv_autorecord,
-				'tftrue_tv_demos_path ' + tftrue_tv_demos_path,
-				'tftrue_no_hats ' + tftrue_no_hats,
-				'tftrue_no_misc ' + tftrue_no_misc,
-				'tftrue_bunnyhop ' + tftrue_bunnyhop,
+				'tftrue_maxfov '   +tftrue_maxfov,
+				'tftrue_freezecam '+tftrue_freezecam,
+				'tftrue_bunnyhop ' +tftrue_bunnyhop,
+				'',
+				'tftrue_logs_apikey ' +tftrue_logs_apikey,
+				'tftrue_restorestats '+tftrue_restorestats,
+				'',
+				'tftrue_tv_autorecord '+tftrue_tv_autorecord,
+				'tftrue_tv_demos_path '+tftrue_tv_demos_path,
+				'',
+				'tftrue_whitelist_id '+tftrue_whitelist_id,
+				'tftrue_no_hats '     +tftrue_no_hats,
+				'tftrue_no_misc '     +tftrue_no_misc,
 				''
 			].join('\n');
 		}
@@ -385,54 +394,62 @@ jQuery(function($) {
 
 		//building and downloading static configs
 		var server = [
-			'//Server settings',
-			'hostname "' + hostname + '"',
-			'sv_password "' + sv_password + '"',
-			'sv_lan ' + sv_lan,
+			'//server settings',
+			'//Made with cfg.tf - custom Team Fortress 2 config generator',
 			'',
-			'rcon_password "' + rcon_password + '"',
-			'sv_rcon_banpenalty ' + sv_rcon_banpenalty,
-			'sv_rcon_minfailures ' + sv_rcon_minfailures,
-			'sv_rcon_maxfailures ' + sv_rcon_maxfailures,
-			'log ' + log,
-			'sv_logfile ' + sv_logfile,
-			'sv_logecho ' + sv_logecho,
-			'sv_logbans ' + sv_logbans,
+			'hostname "'   +hostname   +'"',
+			'sv_password "'+sv_password+'"',
 			'',
-			'',
-			'sv_pure ' + sv_pure,
-			'sv_pure_kick_clients ' + sv_pure_kick_clients,
+			'sv_cheats '+sv_cheats,
+			'sv_pausable '+sv_pausable,
 			'sv_alltalk ' + sv_alltalk,
-			'mp_allowspectators ' + mp_allowspectators,
-			'mp_autoteambalance ' + mp_autoteambalance,
-			'mp_teams_unbalance_limit ' + mp_teams_unbalance_limit,
-			'mp_forcecamera ' + mp_forcecamera,
-			'sv_allow_wait_command ' + sv_allow_wait_command,
-			'sv_cheats ' + sv_cheats,
-			'sv_pausable ' + sv_pausable,
-			'mp_stalemate_enable ' + mp_stalemate_enable,
-			'mp_stalemate_timelimit ' + mp_stalemate_timelimit,
-			'mp_winlimit ' + mp_winlimit,
-			'mp_timelimit ' + mp_timelimit,
-			'tf_weapon_criticals ' + tf_weapon_criticals,
-			'tf_use_fixed_weaponspreads ' + tf_use_fixed_weaponspreads,
+			'sv_allow_wait_command '+sv_allow_wait_command,
+			'sv_lan '+sv_lan,
 			'',
-			'sv_maxrate ' + sv_maxrate,
-			'sv_minrate ' + sv_minrate,
-			'sv_maxupdaterate ' + sv_maxupdaterate,
-			'sv_minupdaterate ' + sv_minupdaterate,
-			'sv_maxcmdrate ' + sv_maxcmdrate,
-			'sv_mincmdrate ' + sv_mincmdrate,
+			'sv_pure '             +sv_pure,
+			'sv_pure_kick_clients '+sv_pure_kick_clients,
+			'///---',
 			'',
+			'sv_maxrate '+sv_maxrate,
+			'sv_minrate '+sv_minrate,
 			'',
-			tftrueset,
+			'sv_maxupdaterate '+sv_maxupdaterate,
+			'sv_minupdaterate '+sv_minupdaterate,
 			'',
+			'sv_maxcmdrate '+sv_maxcmdrate,
+			'sv_mincmdrate '+sv_mincmdrate,
+			'///---',
 			'',
+			'tf_weapon_criticals '       +tf_weapon_criticals,
+			'tf_use_fixed_weaponspreads '+tf_use_fixed_weaponspreads,
 			'',
-			'//Custom settings',
+			'mp_autoteambalance '      +mp_autoteambalance,
+			'mp_teams_unbalance_limit '+mp_teams_unbalance_limit,
 			'',
-			bindings,
+			'mp_winlimit ' +mp_winlimit,
+			'mp_timelimit '+mp_timelimit,
 			'',
+			'mp_allowspectators '+mp_allowspectators,
+			'mp_forcecamera '    +mp_forcecamera,
+			'',
+			'mp_stalemate_enable '   +mp_stalemate_enable,
+			'mp_stalemate_timelimit '+mp_stalemate_timelimit,
+			'///---',
+			'',
+			'rcon_password "'    +rcon_password+'"',
+			'sv_rcon_banpenalty '+sv_rcon_banpenalty,
+			'',
+			'sv_rcon_minfailures '+sv_rcon_minfailures,
+			'sv_rcon_maxfailures '+sv_rcon_maxfailures,
+			'///---',
+			'',
+			'log '       +log,
+			'sv_logfile '+sv_logfile,
+			'sv_logecho '+sv_logecho,
+			'sv_logbans '+sv_logbans,
+			'///---',
+			surround('\n', tftrueset, '///---\n')+
+			surround('\n', bindings, '///---\n'),
 			'//shameless promotion',
 			'echo "-----------------------------------------------------------"',
 			'echo "------------------Thanks for using CFG.TF------------------"',
@@ -462,6 +479,4 @@ jQuery(function($) {
 
 		return false;
 	});
-
-
 });
