@@ -73,7 +73,6 @@ jQuery(function($) {
 	}
 
 	$('#download_form').on('submit', function() {
-
 		resetMessage();
 
 		var zip = new JSZip();
@@ -84,69 +83,95 @@ jQuery(function($) {
 
 		//general
 		//var os = $('#os').val();
-		var hostname = $('#hostname').val();
+		var hostname    = $('#hostname').val();
 		var sv_password = $('#sv_password').val();
-		var sv_lan = $('#sv_lan').val();
+		var sv_lan      = $('#sv_lan').val();
+		///---
 
 		//security
-		var rcon_password = $('#rcon_password').val();
+		var rcon_password      = $('#rcon_password').val();
 		var sv_rcon_banpenalty = $('#sv_rcon_banpenalty').val();
+
 		var sv_rcon_minfailures = $('#sv_rcon_minfailures').val();
 		var sv_rcon_maxfailures = $('#sv_rcon_maxfailures').val();
-		var log = $('#log').val();
+
+		var log        = $('#log').val();
 		var sv_logfile = $('#sv_logfile').val();
 		var sv_logecho = $('#sv_logecho').val();
 		var sv_logbans = $('#sv_logbans').val();
+		///---
 
-		//tftrue
-		var tftrue_maxfov = $('#tftrue_maxfov').val();
+		var tftrue_maxfov    = $('#tftrue_maxfov').val();
 		var tftrue_freezecam = $('#tftrue_freezecam').val();
-		var tftrue_whitelist_id = $('#tftrue_whitelist_id').val();
-		var tftrue_logs_apikey = $('#tftrue_logs_apikey').val();
-		var tftrue_restorestats = $('#tftrue_restorestats').val();
+
 		var tftrue_tv_autorecord = $('#tftrue_tv_autorecord').val();
 		var tftrue_tv_demos_path = $('#tftrue_tv_demos_path').val();
-		var tftrue_no_hats = $('#tftrue_no_hats').val();
-		var tftrue_no_misc = $('#tftrue_no_misc').val();
-		var tftrue_bunnyhop = $('#tftrue_bunnyhop').val();
+
+		var tftrue_whitelist_id = $('#tftrue_whitelist_id').val();
+		var tftrue_no_hats      = $('#tftrue_no_hats').val();
+		var tftrue_no_misc      = $('#tftrue_no_misc').val();
+
+		var tftrue_logs_apikey  = $('#tftrue_logs_apikey').val();
+		var tftrue_restorestats = $('#tftrue_restorestats').val();
+		var tftrue_bunnyhop     = $('#tftrue_bunnyhop').val();
+		///---
 
 		//various
-		var sv_pure = $('#sv_pure').val();
-		var sv_pure_kick_clients = $('#sv_pure_kick_clients').val();
-		var sv_alltalk = $('#sv_alltalk').val();
-		var mp_allowspectators = $('#mp_allowspectators').val();
-		var mp_autoteambalance = $('#mp_autoteambalance').val();
-		var mp_teams_unbalance_limit = $('#mp_teams_unbalance_limit').val();
-		var mp_forcecamera = $('#mp_forcecamera').val();
 		var sv_allow_wait_command = $('#sv_allow_wait_command').val();
-		var sv_cheats = $('#sv_cheats').val();
-		var sv_pausable = $('#sv_pausable').val();
-		var mp_stalemate_enable = $('#mp_stalemate_enable').val();
-		var mp_stalemate_timelimit = $('#mp_stalemate_timelimit').val();
-		var mp_winlimit = $('#mp_winlimit').val();
-		var mp_timelimit = $('#mp_timelimit').val();
-		var tf_weapon_criticals = $('#tf_weapon_criticals').val();
+		var sv_cheats             = $('#sv_cheats').val();
+		var sv_pausable           = $('#sv_pausable').val();
+		var sv_alltalk            = $('#sv_alltalk').val();
+
+		var sv_pure              = $('#sv_pure').val();
+		var sv_pure_kick_clients = $('#sv_pure_kick_clients').val();
+
+		var tf_weapon_criticals        = $('#tf_weapon_criticals').val();
 		var tf_use_fixed_weaponspreads = $('#tf_use_fixed_weaponspreads').val();
+
+		var mp_allowspectators = $('#mp_allowspectators').val();
+		var mp_forcecamera     = $('#mp_forcecamera').val();
+
+		var mp_autoteambalance       = $('#mp_autoteambalance').val();
+		var mp_teams_unbalance_limit = $('#mp_teams_unbalance_limit').val();
+
+		var mp_winlimit  = $('#mp_winlimit').val();
+		var mp_timelimit = $('#mp_timelimit').val();
+
+		var mp_stalemate_enable    = $('#mp_stalemate_enable').val();
+		var mp_stalemate_timelimit = $('#mp_stalemate_timelimit').val();
+		///---
 
 		//net
 		var sv_maxrate = $('#sv_maxrate').val();
 		var sv_minrate = $('#sv_minrate').val();
+
 		var sv_maxupdaterate = $('#sv_maxupdaterate').val();
 		var sv_minupdaterate = $('#sv_minupdaterate').val();
+
 		var sv_maxcmdrate = $('#sv_maxcmdrate').val();
 		var sv_mincmdrate = $('#tf_use_fixed_weaponspreads').val();
+		///---
 
 		//get large piece of custom set
 		var bindings = $('#bindings').val();
 		var tftrueset = '';
 
-		/*  		if($("#thing").is(':checked')){
-					var thing = "1"
-					} else {
-					var thing = "0"
-				} */
 		if ($('#tftrue').is(':checked')) {
-			tftrueset = '//TFTrue settings \n\ntftrue_maxfov ' + tftrue_maxfov + '\ntftrue_freezecam ' + tftrue_freezecam + '\ntftrue_whitelist_id ' + tftrue_whitelist_id + '\ntftrue_logs_apikey ' + tftrue_logs_apikey + '\ntftrue_restorestats ' + tftrue_restorestats + '\ntftrue_tv_autorecord ' + tftrue_tv_autorecord + '\ntftrue_tv_demos_path ' + tftrue_tv_demos_path + '\ntftrue_no_hats ' + tftrue_no_hats + '\ntftrue_no_misc ' + tftrue_no_misc + '\ntftrue_bunnyhop ' + tftrue_bunnyhop + '\n';
+			tftrueset = [
+				'//TFTrue settings ',
+				'',
+				'tftrue_maxfov ' + tftrue_maxfov,
+				'tftrue_freezecam ' + tftrue_freezecam,
+				'tftrue_whitelist_id ' + tftrue_whitelist_id,
+				'tftrue_logs_apikey ' + tftrue_logs_apikey,
+				'tftrue_restorestats ' + tftrue_restorestats,
+				'tftrue_tv_autorecord ' + tftrue_tv_autorecord,
+				'tftrue_tv_demos_path ' + tftrue_tv_demos_path,
+				'tftrue_no_hats ' + tftrue_no_hats,
+				'tftrue_no_misc ' + tftrue_no_misc,
+				'tftrue_bunnyhop ' + tftrue_bunnyhop,
+				''
+			].join('\n');
 		}
 
 		// find every checked item
@@ -170,10 +195,7 @@ jQuery(function($) {
 					binary: true
 				});
 			}
-
-
-
-			if (iswhat === 'etf2l') {
+			else if (iswhat === 'etf2l') {
 				zip.file('cfg/etf2l.cfg', urlToPromise('../server/cfg/etf2l/etf2l.cfg'), {
 					binary: true
 				});
@@ -229,7 +251,7 @@ jQuery(function($) {
 					binary: true
 				});
 			}
-			if (iswhat === 'ugc') {
+			else if (iswhat === 'ugc') {
 				zip.file('cfg/ugc_4v_base.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_base.cfg'), {
 					binary: true
 				});
@@ -306,7 +328,7 @@ jQuery(function($) {
 					binary: true
 				});
 			}
-			if (iswhat === 'ozfortress') {
+			else if (iswhat === 'ozfortress') {
 				zip.file('cfg/ozfortress.cfg', urlToPromise('../server/cfg/oz/ozfortress.cfg'), {
 					binary: true
 				});
@@ -359,27 +381,77 @@ jQuery(function($) {
 					binary: true
 				});
 			}
-
 		});
 
-
 		//building and downloading static configs
-		zip.file('cfg/server.cfg', '//Server settings\nhostname "' + hostname + '"\nsv_password "' + sv_password + '"\nsv_lan ' + sv_lan + '\n\nrcon_password "' + rcon_password + '"\nsv_rcon_banpenalty ' + sv_rcon_banpenalty + '\nsv_rcon_minfailures ' + sv_rcon_minfailures + '\nsv_rcon_maxfailures ' + sv_rcon_maxfailures + '\nlog ' + log + '\nsv_logfile ' + sv_logfile + '\nsv_logecho ' + sv_logecho + '\nsv_logbans ' + sv_logbans + '\n\n\nsv_pure ' + sv_pure + '\nsv_pure_kick_clients ' + sv_pure_kick_clients + '\nsv_alltalk ' + sv_alltalk + '\nmp_allowspectators ' + mp_allowspectators + '\nmp_autoteambalance ' + mp_autoteambalance + '\nmp_teams_unbalance_limit ' + mp_teams_unbalance_limit + '\nmp_forcecamera ' + mp_forcecamera + '\nsv_allow_wait_command ' + sv_allow_wait_command + '\nsv_cheats ' + sv_cheats + '\nsv_pausable ' + sv_pausable + '\nmp_stalemate_enable ' + mp_stalemate_enable + '\nmp_stalemate_timelimit ' + mp_stalemate_timelimit + '\nmp_winlimit ' + mp_winlimit + '\nmp_timelimit ' + mp_timelimit + '\ntf_weapon_criticals ' + tf_weapon_criticals + '\ntf_use_fixed_weaponspreads ' + tf_use_fixed_weaponspreads + '\n\nsv_maxrate ' + sv_maxrate + '\nsv_minrate ' + sv_minrate + '\nsv_maxupdaterate ' + sv_maxupdaterate + '\nsv_minupdaterate ' + sv_minupdaterate + '\nsv_maxcmdrate ' + sv_maxcmdrate + '\nsv_mincmdrate ' + sv_mincmdrate + '\n\n\n' + tftrueset + '\n\n\n\n//Custom settings\n\n' + bindings + '\n\necho -----------------------------------------------------------\necho ----------------- Thanks for using CFG.TF -----------------\necho ---------Build your own custom config at cfg.tf------------\necho -----------------------------------------------------------'); //server
-
+		var server = [
+			'//Server settings',
+			'hostname "' + hostname + '"',
+			'sv_password "' + sv_password + '"',
+			'sv_lan ' + sv_lan,
+			'',
+			'rcon_password "' + rcon_password + '"',
+			'sv_rcon_banpenalty ' + sv_rcon_banpenalty,
+			'sv_rcon_minfailures ' + sv_rcon_minfailures,
+			'sv_rcon_maxfailures ' + sv_rcon_maxfailures,
+			'log ' + log,
+			'sv_logfile ' + sv_logfile,
+			'sv_logecho ' + sv_logecho,
+			'sv_logbans ' + sv_logbans,
+			'',
+			'',
+			'sv_pure ' + sv_pure,
+			'sv_pure_kick_clients ' + sv_pure_kick_clients,
+			'sv_alltalk ' + sv_alltalk,
+			'mp_allowspectators ' + mp_allowspectators,
+			'mp_autoteambalance ' + mp_autoteambalance,
+			'mp_teams_unbalance_limit ' + mp_teams_unbalance_limit,
+			'mp_forcecamera ' + mp_forcecamera,
+			'sv_allow_wait_command ' + sv_allow_wait_command,
+			'sv_cheats ' + sv_cheats,
+			'sv_pausable ' + sv_pausable,
+			'mp_stalemate_enable ' + mp_stalemate_enable,
+			'mp_stalemate_timelimit ' + mp_stalemate_timelimit,
+			'mp_winlimit ' + mp_winlimit,
+			'mp_timelimit ' + mp_timelimit,
+			'tf_weapon_criticals ' + tf_weapon_criticals,
+			'tf_use_fixed_weaponspreads ' + tf_use_fixed_weaponspreads,
+			'',
+			'sv_maxrate ' + sv_maxrate,
+			'sv_minrate ' + sv_minrate,
+			'sv_maxupdaterate ' + sv_maxupdaterate,
+			'sv_minupdaterate ' + sv_minupdaterate,
+			'sv_maxcmdrate ' + sv_maxcmdrate,
+			'sv_mincmdrate ' + sv_mincmdrate,
+			'',
+			'',
+			tftrueset,
+			'',
+			'',
+			'',
+			'//Custom settings',
+			'',
+			bindings,
+			'',
+			'//shameless promotion',
+			'echo "-----------------------------------------------------------"',
+			'echo "------------------Thanks for using CFG.TF------------------"',
+			'echo "------Create your own custom config at https://cfg.tf------"',
+			'echo "-----------------------------------------------------------"'
+		].join('\n');
+		zip.file('cfg/server.cfg', server); //server
 
 		// when everything has been downloaded, we can trigger the dl
-		zip.generateAsync({
-			type: 'blob'
-		}, function updateCallback(metadata) {
-			var msg = 'Packing : ' + metadata.percent.toFixed(2) + ' %';
-			if (metadata.currentFile) {
-				msg += ', current file = ' + metadata.currentFile;
-			}
-			showMessage(msg);
-			updatePercent(metadata.percent | 0);
-		})
+		zip.generateAsync({type: 'blob'},
+			function updateCallback(metadata) {
+				var msg = 'Packing : ' + metadata.percent.toFixed(2) + ' %';
+				if (metadata.currentFile) {
+					msg += ', current file = ' + metadata.currentFile;
+				}
+				showMessage(msg);
+				updatePercent(metadata.percent | 0);
+			})
 			.then(function callback(blob) {
-
 				// see FileSaver.js
 				saveAs(blob, 'server_config.zip');
 
