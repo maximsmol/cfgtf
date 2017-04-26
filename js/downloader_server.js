@@ -1,5 +1,7 @@
+/* global jQuery, JSZip, JSZipUtils, saveAs */
+
 jQuery(function($) {
-	"use strict";
+	'use strict';
 
 	var Promise = window.Promise;
 	if (!Promise) {
@@ -9,78 +11,79 @@ jQuery(function($) {
 	/**
 	 * Reset the message.
 	 */
-	function resetMessage() {
-		$("#result")
+	var resetMessage = function() {
+		$('#result')
 			.removeClass()
-			.text("");
-	}
+			.text('');
+	};
 	/**
 	 * show a successful message.
 	 * @param {String} text the text to show.
 	 */
-	function showMessage(text) {
+	var showMessage = function(text) {
 		resetMessage();
-		$("#result")
-			.addClass("alert alert-success")
+		$('#result')
+			.addClass('alert alert-success')
 			.text(text);
-	}
+	};
 	/**
 	 * show an error message.
 	 * @param {String} text the text to show.
 	 */
-	function showError(text) {
+	var showError = function(text) {
 		resetMessage();
-		$("#result")
-			.addClass("alert alert-danger")
+		$('#result')
+			.addClass('alert alert-danger')
 			.text(text);
-	}
+	};
 	/**
 	 * Update the progress bar.
 	 * @param {Integer} percent the current percent
 	 */
-	function updatePercent(percent) {
-		$("#progress_bar").removeClass("hide")
-			.find(".progress-bar")
-			.attr("aria-valuenow", percent)
+	var updatePercent = function(percent) {
+		$('#progress_bar').removeClass('hide')
+			.find('.progress-bar')
+			.attr('aria-valuenow', percent)
 			.css({
-				width: percent + "%"
+				width: percent + '%'
 			});
-	}
+	};
 
 	/**
 	 * Fetch the content and return the associated promise.
 	 * @param {String} url the url of the content to fetch.
 	 * @return {Promise} the promise containing the data.
 	 */
-	function urlToPromise(url) {
+	var urlToPromise = function(url) {
 		return new Promise(function(resolve, reject) {
 			JSZipUtils.getBinaryContent(url, function(err, data) {
 				if (err) {
 					reject(err);
-				} else {
+				}
+				else {
 					resolve(data);
 				}
 			});
 		});
-	}
+	};
 
 	if (!JSZip.support.blob) {
-		showError("This only works with a good browser!");
+		showError('This only works with a good browser!');
 		return;
 	}
 
-	var $form = $("#download_form").on("submit", function() {
+	$('#download_form').on('submit', function() {
 
 		resetMessage();
 
 		var zip = new JSZip();
-		var customs = ""; //a var to store all the extra stuff to add to autoexec
+		//var customs = ''; //a var to store all the extra stuff to add to autoexec
 
 		//getting values form inputs
 		// !!!!IMPORTANT!!!! All the selectable html fields (non-text forms) should have data-name and data-url attributes or everything breaks
 
 		//general
-		var os = $('#os').val();
+		//var os = $('#os').val();
 		var hostname = $('#hostname').val();
 		var sv_password = $('#sv_password').val();
 		var sv_lan = $('#sv_lan').val();
@@ -135,224 +138,224 @@ jQuery(function($) {
 
 		//get large piece of custom set
 		var bindings = $('#bindings').val();
-		var tftrueset = "";
+		var tftrueset = '';
 
 		/*  		if($("#thing").is(':checked')){
 					var thing = "1"
 					} else {
 					var thing = "0"
 				} */
-		if ($("#tftrue").is(':checked')) {
-			tftrueset = "//TFTrue settings \n\ntftrue_maxfov " + tftrue_maxfov + "\ntftrue_freezecam " + tftrue_freezecam + "\ntftrue_whitelist_id " + tftrue_whitelist_id + "\ntftrue_logs_apikey " + tftrue_logs_apikey + "\ntftrue_restorestats " + tftrue_restorestats + "\ntftrue_tv_autorecord " + tftrue_tv_autorecord + "\ntftrue_tv_demos_path " + tftrue_tv_demos_path + "\ntftrue_no_hats " + tftrue_no_hats + "\ntftrue_no_misc " + tftrue_no_misc + "\ntftrue_bunnyhop " + tftrue_bunnyhop + "\n";
+		if ($('#tftrue').is(':checked')) {
+			tftrueset = '//TFTrue settings \n\ntftrue_maxfov ' + tftrue_maxfov + '\ntftrue_freezecam ' + tftrue_freezecam + '\ntftrue_whitelist_id ' + tftrue_whitelist_id + '\ntftrue_logs_apikey ' + tftrue_logs_apikey + '\ntftrue_restorestats ' + tftrue_restorestats + '\ntftrue_tv_autorecord ' + tftrue_tv_autorecord + '\ntftrue_tv_demos_path ' + tftrue_tv_demos_path + '\ntftrue_no_hats ' + tftrue_no_hats + '\ntftrue_no_misc ' + tftrue_no_misc + '\ntftrue_bunnyhop ' + tftrue_bunnyhop + '\n';
 		}
 
 		// find every checked item
-		$(this).find(":checked").each(function() {
+		$(this).find(':checked').each(function() {
 
 			var $this = $(this);
-			var url = $this.data("url");
-			var iswhat = $this.data("name");
-			var filename = url.replace(/.*\//g, "");
-			if (iswhat === "tftrue") {
-				zip.file("addons/TFTrue.dll", urlToPromise("../server/addons/tftrue/TFTrue.dll"), {
+			//var url = $this.data('url');
+			var iswhat = $this.data('name');
+			//var filename = url.replace(/.*\//g, '');
+			if (iswhat === 'tftrue') {
+				zip.file('addons/TFTrue.dll', urlToPromise('../server/addons/tftrue/TFTrue.dll'), {
 					binary: true
 				});
-				zip.file("addons/TFTrue.so", urlToPromise("../server/addons/tftrue/TFTrue.so"), {
+				zip.file('addons/TFTrue.so', urlToPromise('../server/addons/tftrue/TFTrue.so'), {
 					binary: true
 				});
-				zip.file("addons/TFTrue.vdf", urlToPromise("../server/addons/tftrue/TFTrue.dll"), {
+				zip.file('addons/TFTrue.vdf', urlToPromise('../server/addons/tftrue/TFTrue.dll'), {
 					binary: true
 				});
-				zip.file("addons/tftrue_readme.txt", urlToPromise("../server/addons/tftrue/tftrue_readme.txt"), {
+				zip.file('addons/tftrue_readme.txt', urlToPromise('../server/addons/tftrue/tftrue_readme.txt'), {
 					binary: true
 				});
 			}
 
 
 
-			if (iswhat === "etf2l") {
-				zip.file("cfg/etf2l.cfg", urlToPromise("../server/cfg/etf2l/etf2l.cfg"), {
+			if (iswhat === 'etf2l') {
+				zip.file('cfg/etf2l.cfg', urlToPromise('../server/cfg/etf2l/etf2l.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_6v6.cfg", urlToPromise("../server/cfg/etf2l/etf2l_6v6.cfg"), {
+				zip.file('cfg/etf2l_6v6.cfg', urlToPromise('../server/cfg/etf2l/etf2l_6v6.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_6v6_5cp.cfg", urlToPromise("../server/cfg/etf2l/etf2l_6v6_5cp.cfg"), {
+				zip.file('cfg/etf2l_6v6_5cp.cfg', urlToPromise('../server/cfg/etf2l/etf2l_6v6_5cp.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_6v6_ctf.cfg", urlToPromise("../server/cfg/etf2l/etf2l_6v6_ctf.cfg"), {
+				zip.file('cfg/etf2l_6v6_ctf.cfg', urlToPromise('../server/cfg/etf2l/etf2l_6v6_ctf.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_6v6_koth.cfg", urlToPromise("../server/cfg/etf2l/etf2l_6v6_koth.cfg"), {
+				zip.file('cfg/etf2l_6v6_koth.cfg', urlToPromise('../server/cfg/etf2l/etf2l_6v6_koth.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_6v6_stopwatch.cfg", urlToPromise("../server/cfg/etf2l/etf2l_6v6_stopwatch.cfg"), {
+				zip.file('cfg/etf2l_6v6_stopwatch.cfg', urlToPromise('../server/cfg/etf2l/etf2l_6v6_stopwatch.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_9v9.cfg", urlToPromise("../server/cfg/etf2l/etf2l_9v9.cfg"), {
+				zip.file('cfg/etf2l_9v9.cfg', urlToPromise('../server/cfg/etf2l/etf2l_9v9.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_9v9_5cp.cfg", urlToPromise("../server/cfg/etf2l/etf2l_9v9_5cp.cfg"), {
+				zip.file('cfg/etf2l_9v9_5cp.cfg', urlToPromise('../server/cfg/etf2l/etf2l_9v9_5cp.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_9v9_ctf.cfg", urlToPromise("../server/cfg/etf2l/etf2l_9v9_ctf.cfg"), {
+				zip.file('cfg/etf2l_9v9_ctf.cfg', urlToPromise('../server/cfg/etf2l/etf2l_9v9_ctf.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_9v9_koth.cfg", urlToPromise("../server/cfg/etf2l/etf2l_9v9_koth.cfg"), {
+				zip.file('cfg/etf2l_9v9_koth.cfg', urlToPromise('../server/cfg/etf2l/etf2l_9v9_koth.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_9v9_stopwatch.cfg", urlToPromise("../server/cfg/etf2l/etf2l_9v9_stopwatch.cfg"), {
+				zip.file('cfg/etf2l_9v9_stopwatch.cfg', urlToPromise('../server/cfg/etf2l/etf2l_9v9_stopwatch.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_bball.cfg", urlToPromise("../server/cfg/etf2l/etf2l_bball.cfg"), {
+				zip.file('cfg/etf2l_bball.cfg', urlToPromise('../server/cfg/etf2l/etf2l_bball.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_custom.cfg", urlToPromise("../server/cfg/etf2l/etf2l_custom.cfg"), {
+				zip.file('cfg/etf2l_custom.cfg', urlToPromise('../server/cfg/etf2l/etf2l_custom.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_golden_cap.cfg", urlToPromise("../server/cfg/etf2l/etf2l_golden_cap.cfg"), {
+				zip.file('cfg/etf2l_golden_cap.cfg', urlToPromise('../server/cfg/etf2l/etf2l_golden_cap.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_whitelist_6v6.txt", urlToPromise("../server/cfg/etf2l/etf2l_whitelist_6v6.txt"), {
+				zip.file('cfg/etf2l_whitelist_6v6.txt', urlToPromise('../server/cfg/etf2l/etf2l_whitelist_6v6.txt'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_whitelist_9v9.txt", urlToPromise("../server/cfg/etf2l/etf2l_whitelist_9v9.txt"), {
+				zip.file('cfg/etf2l_whitelist_9v9.txt', urlToPromise('../server/cfg/etf2l/etf2l_whitelist_9v9.txt'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_whitelist_bball.txt", urlToPromise("../server/cfg/etf2l/etf2l_whitelist_bball.txt"), {
+				zip.file('cfg/etf2l_whitelist_bball.txt', urlToPromise('../server/cfg/etf2l/etf2l_whitelist_bball.txt'), {
 					binary: true
 				});
-				zip.file("cfg/etf2l_whitelist_ultiduo.txt", urlToPromise("../server/cfg/etf2l/etf2l_whitelist_ultiduo.txt"), {
-					binary: true
-				});
-			}
-			if (iswhat === "ugc") {
-				zip.file("cfg/ugc_4v_base.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_base.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_custom.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_custom.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_golden.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_golden.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_koth.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_koth.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_koth_overtime.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_koth_overtime.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_standard.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_standard.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_standard_overtime.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_standard_overtime.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_4v_stopwatch.cfg", urlToPromise("../server/cfg/ugc/ugc_4v_stopwatch.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_base.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_base.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_custom.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_custom.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_golden.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_golden.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_koth.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_koth.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_koth_overtime.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_koth_overtime.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_standard.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_standard.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_standard_overtime.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_standard_overtime.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_6v_stopwatch.cfg", urlToPromise("../server/cfg/ugc/ugc_6v_stopwatch.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_base.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_base.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_ctf.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_ctf.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_custom.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_custom.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_koth.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_koth.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_standard.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_standard.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_HL_stopwatch.cfg", urlToPromise("../server/cfg/ugc/ugc_HL_stopwatch.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/ugc_off.cfg", urlToPromise("../server/cfg/ugc/ugc_off.cfg"), {
-					binary: true
-				});
-				zip.file("cfg/item_whitelist_ugc_4v4.txt", urlToPromise("../server/cfg/ugc/item_whitelist_ugc_4v4.txt"), {
-					binary: true
-				});
-				zip.file("cfg/item_whitelist_ugc_hl.txt", urlToPromise("../server/cfg/ugc/item_whitelist_ugc_hl.txt"), {
+				zip.file('cfg/etf2l_whitelist_ultiduo.txt', urlToPromise('../server/cfg/etf2l/etf2l_whitelist_ultiduo.txt'), {
 					binary: true
 				});
 			}
-			if (iswhat === "ozfortress") {
-				zip.file("cfg/ozfortress.cfg", urlToPromise("../server/cfg/oz/ozfortress.cfg"), {
+			if (iswhat === 'ugc') {
+				zip.file('cfg/ugc_4v_base.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_base.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_6v6.cfg", urlToPromise("../server/cfg/oz/ozfortress_6v6.cfg"), {
+				zip.file('cfg/ugc_4v_custom.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_custom.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_6v6_5cp.cfg", urlToPromise("../server/cfg/oz/ozfortress_6v6_5cp.cfg"), {
+				zip.file('cfg/ugc_4v_golden.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_golden.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_6v6_koth.cfg", urlToPromise("../server/cfg/oz/ozfortress_6v6_koth.cfg"), {
+				zip.file('cfg/ugc_4v_koth.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_koth.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_6v6_push.cfg", urlToPromise("../server/cfg/oz/ozfortress_6v6_push.cfg"), {
+				zip.file('cfg/ugc_4v_koth_overtime.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_koth_overtime.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_6v6_scrim.cfg", urlToPromise("../server/cfg/oz/ozfortress_6v6_scrim.cfg"), {
+				zip.file('cfg/ugc_4v_standard.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_standard.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9.cfg"), {
+				zip.file('cfg/ugc_4v_standard_overtime.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_standard_overtime.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9_5cp.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9_5cp.cfg"), {
+				zip.file('cfg/ugc_4v_stopwatch.cfg', urlToPromise('../server/cfg/ugc/ugc_4v_stopwatch.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9_koth.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9_koth.cfg"), {
+				zip.file('cfg/ugc_6v_base.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_base.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9_push.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9_push.cfg"), {
+				zip.file('cfg/ugc_6v_custom.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_custom.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9_scrim.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9_scrim.cfg"), {
+				zip.file('cfg/ugc_6v_golden.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_golden.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_9v9_stopwatch.cfg", urlToPromise("../server/cfg/oz/ozfortress_9v9_stopwatch.cfg"), {
+				zip.file('cfg/ugc_6v_koth.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_koth.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_golden_cap.cfg", urlToPromise("../server/cfg/oz/ozfortress_golden_cap.cfg"), {
+				zip.file('cfg/ugc_6v_koth_overtime.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_koth_overtime.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_ultiduo.cfg", urlToPromise("../server/cfg/oz/ozfortress_ultiduo.cfg"), {
+				zip.file('cfg/ugc_6v_standard.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_standard.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_whitelist_6v6.txt", urlToPromise("../server/cfg/oz/ozfortress_whitelist_6v6.txt"), {
+				zip.file('cfg/ugc_6v_standard_overtime.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_standard_overtime.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_whitelist_9v9.txt", urlToPromise("../server/cfg/oz/ozfortress_whitelist_9v9.txt"), {
+				zip.file('cfg/ugc_6v_stopwatch.cfg', urlToPromise('../server/cfg/ugc/ugc_6v_stopwatch.cfg'), {
 					binary: true
 				});
-				zip.file("cfg/ozfortress_whitelist_ultiduo.txt", urlToPromise("../server/cfg/oz/ozfortress_whitelist_ultiduo.txt"), {
+				zip.file('cfg/ugc_HL_base.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_base.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_HL_ctf.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_ctf.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_HL_custom.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_custom.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_HL_koth.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_koth.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_HL_standard.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_standard.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_HL_stopwatch.cfg', urlToPromise('../server/cfg/ugc/ugc_HL_stopwatch.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ugc_off.cfg', urlToPromise('../server/cfg/ugc/ugc_off.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/item_whitelist_ugc_4v4.txt', urlToPromise('../server/cfg/ugc/item_whitelist_ugc_4v4.txt'), {
+					binary: true
+				});
+				zip.file('cfg/item_whitelist_ugc_hl.txt', urlToPromise('../server/cfg/ugc/item_whitelist_ugc_hl.txt'), {
+					binary: true
+				});
+			}
+			if (iswhat === 'ozfortress') {
+				zip.file('cfg/ozfortress.cfg', urlToPromise('../server/cfg/oz/ozfortress.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_6v6.cfg', urlToPromise('../server/cfg/oz/ozfortress_6v6.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_6v6_5cp.cfg', urlToPromise('../server/cfg/oz/ozfortress_6v6_5cp.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_6v6_koth.cfg', urlToPromise('../server/cfg/oz/ozfortress_6v6_koth.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_6v6_push.cfg', urlToPromise('../server/cfg/oz/ozfortress_6v6_push.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_6v6_scrim.cfg', urlToPromise('../server/cfg/oz/ozfortress_6v6_scrim.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9_5cp.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9_5cp.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9_koth.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9_koth.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9_push.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9_push.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9_scrim.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9_scrim.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_9v9_stopwatch.cfg', urlToPromise('../server/cfg/oz/ozfortress_9v9_stopwatch.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_golden_cap.cfg', urlToPromise('../server/cfg/oz/ozfortress_golden_cap.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_ultiduo.cfg', urlToPromise('../server/cfg/oz/ozfortress_ultiduo.cfg'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_whitelist_6v6.txt', urlToPromise('../server/cfg/oz/ozfortress_whitelist_6v6.txt'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_whitelist_9v9.txt', urlToPromise('../server/cfg/oz/ozfortress_whitelist_9v9.txt'), {
+					binary: true
+				});
+				zip.file('cfg/ozfortress_whitelist_ultiduo.txt', urlToPromise('../server/cfg/oz/ozfortress_whitelist_ultiduo.txt'), {
 					binary: true
 				});
 			}
@@ -366,21 +369,21 @@ jQuery(function($) {
 
 		// when everything has been downloaded, we can trigger the dl
 		zip.generateAsync({
-				type: "blob"
-			}, function updateCallback(metadata) {
-				var msg = "Packing : " + metadata.percent.toFixed(2) + " %";
-				if (metadata.currentFile) {
-					msg += ", current file = " + metadata.currentFile;
-				}
-				showMessage(msg);
-				updatePercent(metadata.percent | 0);
-			})
+			type: 'blob'
+		}, function updateCallback(metadata) {
+			var msg = 'Packing : ' + metadata.percent.toFixed(2) + ' %';
+			if (metadata.currentFile) {
+				msg += ', current file = ' + metadata.currentFile;
+			}
+			showMessage(msg);
+			updatePercent(metadata.percent | 0);
+		})
 			.then(function callback(blob) {
 
 				// see FileSaver.js
-				saveAs(blob, "server_config.zip");
+				saveAs(blob, 'server_config.zip');
 
-				showMessage("Done! Extract this archive to your server /tf folder.");
+				showMessage('Done! Extract this archive to your server /tf folder.');
 			}, function(e) {
 				showError(e);
 			});
