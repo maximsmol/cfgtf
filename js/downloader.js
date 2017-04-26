@@ -114,11 +114,11 @@ jQuery(function($) {
 		var ding_kill_max    = $('#killmax').val();
 
 		//network
+		var rate = $('#rate').val();
+		var uprate = $('#uprate').val();
 		var cmdrate = $('#cmdrate').val();
 		var interp = $('#interp').val();
 		var intratio = $('#intratio').val();
-		var uprate = $('#uprate').val();
-		var rate = $('#rate').val();
 
 		//demo support
 		var ds_del    = $('#ds_delete').is(':checked');
@@ -170,17 +170,17 @@ jQuery(function($) {
 			var filename = url.replace(/.*\//g, '');
 			if (iswhat === 'gfx')
 				zipbin(url, 'cfg/gfx.cfg');
-			if (iswhat === 'scripts')
+			else if (iswhat === 'scripts')
 				zipbin(url, 'custom/runfasterpls/scripts/' + filename);
-			if (iswhat === 'hitsound')
+			else if (iswhat === 'hitsound')
 				zipbin(url, 'custom/damage/sound/ui/hitsound.wav');
-			if (iswhat === 'killsound')
+			else if (iswhat === 'killsound')
 				zipbin(url, 'custom/damage/sound/ui/killsound.wav');
-			if (iswhat === 'vpks')
+			else if (iswhat === 'vpks')
 				zipbin(url, 'custom/' + filename);
-			if (iswhat === 'configs')
+			else if (iswhat === 'configs')
 				zipbin(url, 'cfg/' + filename);
-			if (iswhat === 'crosshairswitcher') {
+			else if (iswhat === 'crosshairswitcher') {
 				zipbin('../make/cfg/class/demoman.cfg', 'cfg/demoman.cfg');
 				zipbin('../make/cfg/class/demoplayback.cfg', 'cfg/demoplayback.cfg');
 				zipbin('../make/cfg/class/engineer.cfg', 'cfg/engineer.cfg');
@@ -265,26 +265,26 @@ jQuery(function($) {
 				zipbin('../make/cfg/class/crosshairswitcher/weapons.cfg', 'cfg/crosshairswitcher/weapons.cfg');
 
 			}
-			if (iswhat === 'sourceres') {
+			else if (iswhat === 'sourceres') {
 				zipbin('../make/addons/SourceRes/addons/SourceRes.dll', 'addons/SourceRes.dll');
 				zipbin('../make/addons/SourceRes/addons/SourceRes.vdf', 'addons/SourceRes.vdf');
 			}
-			if (iswhat === 'prec') {
+			else if (iswhat === 'prec') {
 				zipbin('../make/addons/prec/addons/PREC.cfg', 'addons/PREC.cfg');
 				zipbin('../make/addons/prec/addons/PREC.dll', 'addons/PREC.dll');
 				zipbin('../make/addons/prec/addons/PREC.vdf', 'addons/PREC.vdf');
 				zipbin('../make/addons/prec/addons/readme_prec.txt', 'addons/readme_prec.txt');
 			}
-			if (iswhat === 'casting') {
+			else if (iswhat === 'casting') {
 				zipbin('../make/addons/CastingEssentials/addons/CastingEssentials.dll', 'addons/CastingEssentials.dll');
 				zipbin('../make/addons/CastingEssentials/addons/CastingEssentials.vdf', 'addons/CastingEssentials.vdf');
 				zipbin('../make/addons/CastingEssentials/materials/debug/debugfbtexture1.vmt', 'materials/debug/debugfbtexture1.vmt');
 			}
-			if (iswhat === 'tweaks') {
+			else if (iswhat === 'tweaks') {
 				zipbin(url, 'cfg/tweaks/' + filename);
 				customs += 'exec tweaks/' + filename.slice(0, -4) + '\n';
 			}
-			if (iswhat === 'bindscheck') {
+			else if (iswhat === 'bindscheck') {
 				var i = 1;
 				while (i <= room) {
 					if (typeof $('#key' + i).val() !== 'undefined' && typeof $('#key' + i).val() !== 'undefined') {
@@ -293,8 +293,7 @@ jQuery(function($) {
 					i++;
 				}
 			}
-
-			if (iswhat === 'tweaks_fastclass') {
+			else if (iswhat === 'tweaks_fastclass') {
 				var src = '../make/cfg/fastclass_'+(xhair?'cs':'')+'.cfg';
 				zipbin(src, 'cfg/tweaks/fastclass.cfg');
 				customs += 'exec tweaks/fastclass\n';
@@ -312,7 +311,6 @@ jQuery(function($) {
 				'echo "-----------------------------------------------------------"'
 			].join('\n');
 			zip.file('cfg/custom.cfg', custom);
-
 		});
 
 		//building and downloading static configs
@@ -472,6 +470,4 @@ jQuery(function($) {
 
 		return false;
 	});
-
-
 });
