@@ -3,10 +3,7 @@
 jQuery(function($) {
 	'use strict';
 
-	var Promise = window.Promise;
-	if (!Promise) {
-		Promise = JSZip.external.Promise;
-	}
+	var Promise = window.Promise || JSZip.external.Promise;
 
 	/**
 	 * Reset the message.
@@ -68,7 +65,7 @@ jQuery(function($) {
 	};
 
 	var surround = function(a, x, b) {
-		if (x !== '') return (a == null ? '' : a)+x+(b == null ? '' : b);
+		if (x !== '') return (a || '')+x+(b || '');
 		return x;
 	};
 
